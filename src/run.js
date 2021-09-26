@@ -25,7 +25,7 @@ const OPTIONS = {
     database: 'zmones',
     // tam kad apsaugoti nuo injection attack'u
     multipleStatements: false
-    
+
 };
 // sukuriama funkcija connect , kuri grazins promisa resolve ir reject. Cia darome tam kad butu galima naudoti async/await
 function connect() {
@@ -86,12 +86,23 @@ let pav = await input("Ivesk pavadinima: ");
 pav = "%" + pav + "%";
 // NIEKADA SITAIP NEREIKTU RASYTI UZKLAUSOS, NES GALES ATAKUOTI HAKERIAI
 // console.log("select * from zmones where vardas = '" + pav + "';");
-const conn = await connect();
-const r = await query(conn, "select * from zmones where vardas like ?;", [pav]);
-// ? i klaustuma sql istato duomenis, cia nera vykdoma komanda, o tik i keliami duomenys. Duomenys SQL atveju perduodami tik su ? TAIP NEGALIMA DARYTI: where...like '" + pav + "';"
-printResults(r);
-// console.log("results", results);
-// console.log("fields", fields);
-await end(conn);
-
+let conn;
+try {
+    conn = await connect();
+    const r = await query(conn, "select * from zmones where vardas like ?;", [pav]);
+    // ? i klaustuma sql istato duomenis, cia nera vykdoma komanda, o tik i keliami duomenys. Duomenys SQL atveju perduodami tik su ? TAIP NEGALIMA DARYTI: where...like '" + pav + "';"
+    printResults(r);
+} catch (err) {
+    console.log("Klaida", err);
+} finally {
+    if (conn) {
+        try {
+            await end(conn);
+            // CONNECTION'US I DUOMENU BAZES REIKIA UZDARINETI BUTINAI
+        } catch (e) {
+            // ignored
+        }
+    }
+}
+console.log("pabaiga");
 rl.close();
