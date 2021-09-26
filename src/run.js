@@ -22,7 +22,9 @@ const OPTIONS = {
     host: 'localhost',
     user: 'zmones',
     password: 'zmones',
-    database: 'zmones'
+    database: 'zmones',
+    multipleStatements: false
+    // tam kad apsaugoti nuo injection attack'u
 };
 // sukuriama funkcija connect , kuri grazins promisa resolve ir reject. Cia darome tam kad butu galima naudoti async/await
 function connect() {
@@ -79,10 +81,12 @@ function printResults({ results, fields }) {
     }
 }
 
-let pav = await input("Ivesk varda: ");
-
+let pav = await input("Ivesk pavadinima: ");
+pav = "%" + pav + "%";
+// NIEKADA SITAIP NEREIKTU RASYTI UZKLAUSOS, NES GALES ATAKUOTI HAKERIAI
+// console.log("select * from zmones where vardas = '" + pav + "';");
 const conn = await connect();
-const r = await query(conn, "select * from zmones where vardas = '" + pav + "';");
+const r = await query(conn, "select * from zmones where vardas like ?;", [pav]);
 printResults(r);
 // console.log("results", results);
 // console.log("fields", fields);
