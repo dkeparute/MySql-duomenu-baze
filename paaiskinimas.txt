@@ -1,0 +1,25 @@
+NORIU IS NODE.JS PRISIJUNGTI PRIE SAVGO DUOMENU BAZES IR ATITINKAMAI GAUTI IS TEN DUOMENIS
+
+INSTALIAVIMAS
+1. npm init -y
+2. Type, start
+3. run.js patestuojam
+
+REIKIA JUNGTIS PRIE SQL SERVERIO
+
+1. https://www.npmjs.com/package/mysql
+2. npm i mysql
+3. nusikopijuojam introduction pvz. i run.js
+4. My SQL administration > users and privileges > add account
+5. limit host matching reiskia is kokiu kompu turi teise prisijungti. % reiskia jog bus galima prisijungti is bet kokio kompo.
+6. Atsijungiam nuo SQL ir mysql connections + sukuriam naują paskyrą.
+7. Prisijungus bus tuscia, nes vartotojas neturi jokiu teisiu.
+8. Grizus i root account, administration > user and and privileges > shema privileges > add entry > pasirenkam konkreciai zmones faila.
+9. Suzymime visus OBJECT RIGHTS, kad galėtų tiktai naudotis duomenų baze > apply
+
+RUN.JS faile:
+
+host > localhost
+user > zmones
+pasword > zmones
+database > zmones
