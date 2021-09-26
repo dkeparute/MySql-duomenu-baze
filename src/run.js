@@ -46,6 +46,26 @@ function end(conn) {
     });
 }
 
+function printResults({ results, fields }) {
+    if (Array.isArray(fields) && Array.isArray(results)) {
+        let header = "";
+        for (const field of fields) {
+            header += field.name + "\t";
+        }
+        console.log(header);
+        for (const row of results) {
+            let rowStr = "";
+            for (const field of fields) {
+                rowStr += row[field.name] + "\t";
+            }
+            console.log(rowStr);
+        }
+    }
+}
+
 const conn = await connect();
-const {results, fields} = await query(conn, "select 1 as vienas");
+const r = await query(conn, "select * from adresai");
+printResults(r);
+// console.log("results", results);
+// console.log("fields", fields);
 await end(conn);
