@@ -23,3 +23,5 @@ host > localhost
 user > zmones
 pasword > zmones
 database > zmones
+
+Is call bac'ku pasidarysim promisus
