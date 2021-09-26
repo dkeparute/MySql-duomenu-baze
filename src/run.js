@@ -14,25 +14,38 @@ function connect() {
         let conn = mysql.createConnection(OPTIONS);
         conn.connect(err => {
             if (err) {
-                reject(err);
-                return;
+                return reject(err);
             }
             resolve(conn);
         });
     });
 }
 
-function query(conn, sql, params) {
-
+function query(conn, sql, values) {
     return new Promise((resolve, reject) => {
-        conn.query()
+        conn.query({
+            sql,
+            values
+        }, (err, results, fields) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve({ results, fields });
+        });
+    });
+}
+// sukuriama funkcija bandand atsijungti
+function end(conn) {
+    return new Promise((resolve, reject) => {
+        conn.end(err => {
+            if (err) {
+                return reject(err);
+            }
+            resolve();
+        });
     });
 }
 
-// reikia sitos bibliotekos info perrasyti i funkcijas, kurios naudotusi promise'sais:
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-});
-
-connection.end();
+const conn = await connect();
+const {results, fields} = await query(conn, "select 1 as vienas");
+await end(conn);
