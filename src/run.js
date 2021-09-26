@@ -23,8 +23,9 @@ const OPTIONS = {
     user: 'zmones',
     password: 'zmones',
     database: 'zmones',
-    multipleStatements: false
     // tam kad apsaugoti nuo injection attack'u
+    multipleStatements: false
+    
 };
 // sukuriama funkcija connect , kuri grazins promisa resolve ir reject. Cia darome tam kad butu galima naudoti async/await
 function connect() {
@@ -87,6 +88,7 @@ pav = "%" + pav + "%";
 // console.log("select * from zmones where vardas = '" + pav + "';");
 const conn = await connect();
 const r = await query(conn, "select * from zmones where vardas like ?;", [pav]);
+// ? i klaustuma sql istato duomenis, cia nera vykdoma komanda, o tik i keliami duomenys. Duomenys SQL atveju perduodami tik su ? TAIP NEGALIMA DARYTI: where...like '" + pav + "';"
 printResults(r);
 // console.log("results", results);
 // console.log("fields", fields);
