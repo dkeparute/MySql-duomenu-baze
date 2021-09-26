@@ -1,5 +1,21 @@
+// norime padaryti jog butu readline
+import * as readline from "readline";
 // cia padarome jog info perkeliama pagal module standarta
 import * as mysql from "mysql";
+
+// cia susikureme readline
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function input(msg) {
+    return new Promise((resolve) => {
+        rl.question(msg, (txt) => {
+            resolve(txt);
+        });
+    });
+}
 
 // cia padarome prisijungima prie duomenu bazes
 const OPTIONS = {
@@ -63,9 +79,13 @@ function printResults({ results, fields }) {
     }
 }
 
+let pav = await input("Ivesk varda: ");
+
 const conn = await connect();
-const r = await query(conn, "select * from adresai");
+const r = await query(conn, "select * from zmones where vardas = '" + pav + "';");
 printResults(r);
 // console.log("results", results);
 // console.log("fields", fields);
 await end(conn);
+
+rl.close();
