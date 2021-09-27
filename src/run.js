@@ -97,7 +97,7 @@ while (choise !== 0) {
     console.log("6. Istrinti zmogaus adresa");
     // GAUNASI
     console.log("7. Visi zmogaus kontaktai");
-    // NESIGAUNA
+    //GAUNASI
     console.log("8. Naujas zmogaus kontaktas");
     // GAUNASI
     console.log("9. Istrinti zmogaus kontakta");
@@ -178,7 +178,6 @@ while (choise !== 0) {
         }
     }
 }
-
 
 // ATNAUJINAME INFORMACIJA - VEIKIA
 
