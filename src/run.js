@@ -89,24 +89,26 @@ while (choise !== 0) {
     console.log("1. Visi zmones");
     console.log("2. Naujas zmogus");
     console.log("3. Istrinti zmogu");
-    // NESIGAUNA
+    // GAUNASI
     console.log("4. Visi zmogaus adresai");
-    // NESIGAUNA
+    // GAUNASI
     console.log("5. Naujas zmogaus adresas");
-     // NESIGAUNA
+    // GAUNASI
     console.log("6. Istrinti zmogaus adresa");
-     // NESIGAUNA
+    // GAUNASI
     console.log("7. Visi zmogaus kontaktai");
-     // NESIGAUNA
+    // NESIGAUNA
     console.log("8. Naujas zmogaus kontaktas");
-     // NESIGAUNA
+    // GAUNASI
     console.log("9. Istrinti zmogaus kontakta");
     console.log("0. Baigti");
-    
+
     choise = parseInt(await input("Pasirink: "));
+    let id;
     let conn;
     let r;
     try {
+        let zmones_id;
         conn = await connect();
         switch (choise) {
             case 1:
@@ -122,56 +124,45 @@ while (choise !== 0) {
                     conn, "insert into zmones (vardas,pavarde, gimimo_data, alga) values (?,?,?,?);", [vardas, pavarde, gimimo_data, alga]);
                 break;
             case 3:
-                let id = await input("Ivesk id: ");
+                id = await input("Ivesk id: ");
                 id = parseInt(id);
-                const r = await query(
+                r = await query(
                     conn,
                     "delete from zmones where id = ?;",
                     [id],
                 );
                 break;
-                case 4:
-                id = await input('Ivesk id: ');
-                id = parseInt(id);
-                r = await query(conn, "select * from adresai where id =?;", [id]);
+            case 4:
+                r = await query(conn, "select * from adresai",);
                 printResults(r);
                 break;
-                case 5:
-                let zmones_id = await input("Ivesk id: ");
-                zmones_id = parseInt(zmones_id);
+            case 5:
+                id = await input('Ivesk id: ');
                 let adresas = await input("Ivesk adresa: ");
-                r = await query(conn, "insert into adresai (zmones_id, adresas) values (?,?);",
-                    [zmones_id, adresas]);
+                let miestas = await input("Ivesk miesta: ");
+                let valstybe = await input("Ivesk valsybe: ");
+                let pasto_kodas = await input("Ivesk pasto koda: ");
+                r = await query(conn, "insert into adresai (zmones_id, adresas, miestas, valstybe, pasto_kodas) values (?,?,?,?,?);",
+                    [id, adresas, miestas, valstybe, pasto_kodas]);
                 break;
             case 6:
-            id = await input("Ivesk id: ");
-            id = parseInt(id);
-            r = await query(
-                conn,
-                "delete from adresai where id = ?;",
-                [id],
-            );
-            // case 7:
-            id = await input("Ivesk id: ");
-            id = parseInt(id);
-            r = await query(conn, "select * from kontaktai",);
-            printResults(r);
+                id = await input("Ivesk id: ");
+                id = parseInt(id);
+                r = await query(conn, "delete from adresai where zmones_id = ?;", [id],);
+                break;
+            case 7:
+                r = await query(conn, "select * from kontaktai",);
+                printResults(r);
             case 8:
                 id = await input("Ivesk id: ");
-                zmones_id = await input("Ivesk kita id: ");
                 let tipas = await input("Ivesk tipa: ");
-                let reiksme = await input("Iveska reiksme: ");
-                r = await query(
-                    conn, "insert into kontaktai (id, zmones_id, tipas, reiksme) values (?,?,?,?);", [id, zmones_id, tipas, reiksme]);
+                let reiksme = await input("Ivesk reiksme: ");
+                r = await query(conn, "insert into kontaktai (zmones_id, tipas, reiksme) values (?,?,?);", [id, tipas, reiksme]);
                 break;
             case 9:
                 id = await input("Ivesk id: ");
                 id = parseInt(id);
-                r = await query(
-                    conn,
-                    "delete from kontaktai where id = ?;",
-                    [id],
-                );
+                r = await query(conn, "delete from kontaktai where zmones_id = ?;", [id],);
             case 0:
                 console.log("Pabaiga");
         }
@@ -187,7 +178,6 @@ while (choise !== 0) {
         }
     }
 }
-
 
 
 // ATNAUJINAME INFORMACIJA - VEIKIA
